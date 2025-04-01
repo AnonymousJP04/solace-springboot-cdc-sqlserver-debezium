@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input-0:
+          destination: ACCOUNTS_CDC_QUEUE
+          binder: cdcsupplier
+        output-0:
+          destination: gtek/portillo/accounts/cdc
+          binder: solace
+      solace:
+        connector:
+          workflows:
+            "0":
+              enabled: true
+ 
+debezium:
+  source:
+    connector.class: io.debezium.connector.sqlserver.SqlServerConnector
+    database.hostname: 192.168.1.18
+    database.port: 1433
+    database.user: sa
+    database.password: "12345678"
+    database.dbname: TalmaDB
+    table.include.list: dbo.Accounts
+ 
+solace:
+  java:
+    host: tcps://mr-connection-1mm2snu2fxz.messaging.solace.cloud:55443
+    msg-vpn: jeantek-service
+    client-username: solace-cloud-client
+    client-password: onvbgk41b21epi8obcb1rcl1jd
